@@ -1,9 +1,11 @@
-from http.server import SimpleHTTPRequestHandler, HTTPServer
+import os
 import json
+from http.server import SimpleHTTPRequestHandler, HTTPServer
 
 class Handler(SimpleHTTPRequestHandler):
 
     def do_POST(self):
+
         if self.path == "/buy":
 
             with open("stock.json","r") as f:
@@ -24,4 +26,9 @@ class Handler(SimpleHTTPRequestHandler):
         else:
             self.send_error(404)
 
-HTTPServer(("0.0.0.0", port), Handler).serve_forever()
+
+port = int(os.environ.get("PORT",8000))
+
+print("Server running on port",port)
+
+HTTPServer(("0.0.0.0",port), Handler).serve_forever()
