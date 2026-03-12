@@ -13,5 +13,47 @@
 <button>Pay with Litecoin</button>
 </a>
 
+  <h2>Shipping Address</h2>
+
+<form id="orderForm">
+
+<input name="name" placeholder="Full Name" required><br><br>
+
+<input name="address" placeholder="Address" required><br><br>
+
+<input name="city" placeholder="City" required><br><br>
+
+<input name="country" placeholder="Country" required><br><br>
+
+<button type="submit">Submit Order</button>
+
+</form>
+
+<p id="msg"></p>
+
+<script>
+
+document.getElementById("orderForm").onsubmit = function(e){
+
+e.preventDefault();
+
+let formData = new FormData(this);
+
+fetch("/order",{
+  method:"POST",
+  body:formData
+})
+.then(()=>{
+
+document.getElementById("msg").innerText="Order sent!";
+
+});
+
+};
+
+</script>
+
+
 </body>
+
 </html>
