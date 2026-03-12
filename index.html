@@ -1,0 +1,37 @@
+<html>
+<head><title>Buy fun 3D prints!!</title>
+</head>
+<body bgcolor="aqua">
+<P>Buy fun 3D prints!!</p>
+<img src="snake.jpg">
+<p>Stock: <span id="stock">loading...</span></p>
+
+<button onclick="buy()">Buy</button>
+
+<p id="msg"></p>
+<script>
+
+function loadStock(){
+  fetch("/stock.json")
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById("stock").innerText = data.snake;
+  });
+}
+
+function buy(){
+  fetch("/buy",{method:"POST"})
+  .then(r=>{
+    if(r.status==200){
+      window.location.href="/payment.html";   // go to payment page
+    }else{
+      alert("Out of stock");
+    }
+  });
+}
+
+loadStock();
+
+</script>
+</body>
+</html>
