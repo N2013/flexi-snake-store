@@ -8,16 +8,21 @@ class Handler(SimpleHTTPRequestHandler):
 
         if self.path == "/buy":
 
-            with open("stock.json","r") as f:
-                data = json.load(f)
+            try:
+                with open("stock.json","r") as f:
+                    data = json.load(f)
+            except:
+                data = {"snake":0}
 
             if data["snake"] > 0:
+
                 data["snake"] -= 1
 
                 with open("stock.json","w") as f:
                     json.dump(data,f)
 
                 self.send_response(200)
+
             else:
                 self.send_response(400)
 
