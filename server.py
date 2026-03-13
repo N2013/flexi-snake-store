@@ -11,7 +11,6 @@ class Handler(SimpleHTTPRequestHandler):
 
         # BUY BUTTON (check stock only)
         if self.path == "/buy":
-
             try:
                 with open("stock.json","r") as f:
                     data = json.load(f)
@@ -24,7 +23,6 @@ class Handler(SimpleHTTPRequestHandler):
                 self.send_response(400)
 
             self.end_headers()
-
 
         # ORDER SUBMIT (reduce stock + email order)
         elif self.path == "/order":
@@ -45,7 +43,6 @@ class Handler(SimpleHTTPRequestHandler):
 
             # reduce stock
             data["snake"] -= 1
-
             with open("stock.json","w") as f:
                 json.dump(data,f)
 
@@ -73,9 +70,10 @@ Time: {time.ctime()}
 
             try:
                 server = smtplib.SMTP_SSL("smtp.gmail.com",465)
-                server.login("flexisnakestore@gmail.com","ytwx piae jnkw akne ")
+                server.login("flexisnakestore@gmail.com","ytwxpiaejnkwakne")
                 server.send_message(msg)
                 server.quit()
+                print(f"Email sent for order {order_id}")
             except Exception as e:
                 print("Email error:", e)
 
@@ -86,9 +84,7 @@ Time: {time.ctime()}
             self.send_error(404)
 
 
-# Render or local port
+# Run server
 port = int(os.environ.get("PORT",8000))
-
-print("Server running on port",port)
-
+print("Server running on port", port)
 HTTPServer(("0.0.0.0",port), Handler).serve_forever()
