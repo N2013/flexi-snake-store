@@ -1,65 +1,69 @@
 <!DOCTYPE html>
 <html>
 <body bgcolor="aqua">
+
 <font color="green" size="4"><h1>Payment</h1></font>
 
 <font color="green" size="4"><p>Send 0.02 LTC to:</p></font>
 
 <font color="green" size="4"><p><b>ltc1q2mx2ddt7cf4hyd3vgqay6zkersd67tf85cwhlr</b></p></font>
 
-<font color="green" size="4"><p>After payment send transaction ID to aadvikarora2312@proton.me. If you can't pay in Litecoin, contact me(using the email provided earlier) for other methods of payment.</p></font>
+<font color="green" size="4">
+<p>After payment send transaction ID to flexisnakestore@gmail.com. If you can't pay in Litecoin, contact me for other methods.</p>
+</font>
 
-<font color="green" size="4"><a href="litecoin:ltc1q2mx2ddt7cf4hyd3vgqay6zkersd67tf85cwhlr?amount=0.02"></font>
+<a href="litecoin:ltc1q2mx2ddt7cf4hyd3vgqay6zkersd67tf85cwhlr?amount=0.02">
 <button>Pay with Litecoin</button>
 </a>
 
-<h2>Shipping Address</h2>
+<h2>Shipping & Payment Info</h2>
 
 <form id="orderForm">
 
-<input name="name" placeholder="Full Name" required><br><br>
+  <input name="name" placeholder="Full Name" required><br><br>
 
-<input name="address" placeholder="Address" required><br><br>
+  <input name="address" placeholder="Address" required><br><br>
 
-<input name="city" placeholder="City" required><br><br>
+  <input name="city" placeholder="City" required><br><br>
 
-<input name="country" placeholder="Country" required><br><br>
+  <input name="country" placeholder="Country" required><br><br>
   
-<input name="email" placeholder="Email address on which transaction ID will be sent" required><br><br>
+  <input name="email" placeholder="Email address on which transaction ID will be sent" required><br><br>
+  
+  <input name="txid" placeholder="Litecoin transaction ID after payment" required><br><br>
 
-<button type="submit">Submit Order</button>
+  <button type="submit">Submit Order</button>
 
 </form>
 
 <p id="msg"></p>
 
 <script>
-
 document.getElementById("orderForm").onsubmit = function(e){
+  e.preventDefault();
 
-e.preventDefault();
+  let formData = new FormData(this);
 
-let formData = new FormData(this);
-
-fetch("/order",{
-  method:"POST",
-  body:formData
-})
-.then(()=>{
-
-document.getElementById("msg").innerText="Order sent!";
-
-});
-
+  fetch("/order",{
+    method:"POST",
+    body:formData
+  })
+  .then(r => {
+    if(r.status == 200){
+      document.getElementById("msg").innerText = "Order sent! 📧 Check your email.";
+      alert("Order sent successfully! 📧 Check your email.");
+    } else {
+      document.getElementById("msg").innerText = "Error sending order.";
+      alert("Order failed to send.");
+    }
+  })
+  .catch(err=>{
+    document.getElementById("msg").innerText = "Connection error.";
+    alert("Server connection error.");
+    console.log(err);
+  });
 };
-
 </script>
 
-
 </body>
-
 </html>
-
-
-
-
